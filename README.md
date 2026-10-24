@@ -175,5 +175,5 @@ To connect Supabase:
    - `PORT`: `4000` (or host provided)
    - `CORS_ORIGIN`: `*` (or your Vercel frontend URL)
    - `NODE_ENV`: `production`
-3. Build Command: `npm install && npm run build:server`
+3. Build Command: `npm install --include=dev && npm run build:server`
 4. Start Command: `npm run start:server` (or `node apps/server/dist/index.js`).

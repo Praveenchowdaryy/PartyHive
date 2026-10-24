@@ -17,7 +17,7 @@
     "test": "npm run test -w apps/server",
     "typecheck": "npm run typecheck -w packages/shared && npm run typecheck -w apps/server && npm run typecheck -w apps/web"
   },
-  "devDependencies": {
+  "dependencies": {
     "concurrently": "^9.1.0",
     "typescript": "^5.7.2"
   }
