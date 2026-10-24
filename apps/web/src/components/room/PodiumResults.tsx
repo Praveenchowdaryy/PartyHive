@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import confetti from 'canvas-confetti';
 import { motion } from 'framer-motion';
-import { GameResultPayload, Player } from '@crowdparty/shared';
+import { GameResultPayload, Player } from '@partyhive/shared';
 import { Trophy, Crown, RotateCcw, Home, Sparkles, Medal } from 'lucide-react';
 import { PlayerAvatar } from '../common/PlayerAvatar';
 

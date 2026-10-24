@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { WordDashPublicState, WordDashPrivateState } from '@crowdparty/shared';
+import { WordDashPublicState, WordDashPrivateState } from '@partyhive/shared';
 import { Zap, CheckCircle2, Trophy, Clock, Send, Sparkles } from 'lucide-react';
 
 interface WordDashViewProps {

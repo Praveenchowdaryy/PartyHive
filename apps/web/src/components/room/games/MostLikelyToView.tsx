@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { MostLikelyToPublicState, MostLikelyToPrivateState, RoomSnapshot } from '@crowdparty/shared';
+import { MostLikelyToPublicState, MostLikelyToPrivateState, RoomSnapshot } from '@partyhive/shared';
 import { Crown, CheckCircle2, Award, Users, Sparkles } from 'lucide-react';
 import { PlayerAvatar } from '../../common/PlayerAvatar';
 

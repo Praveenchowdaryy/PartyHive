@@ -4,7 +4,7 @@ import React, { useEffect, useCallback } from 'react';
 import {
   ReactionArenaPublicState,
   ReactionArenaPrivateState,
-} from '@crowdparty/shared';
+} from '@partyhive/shared';
 import { Zap, AlertTriangle, CheckCircle2, Clock } from 'lucide-react';
 import { PlayerAvatar } from '../../common/PlayerAvatar';
 

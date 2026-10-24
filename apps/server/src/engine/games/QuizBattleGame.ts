@@ -2,7 +2,7 @@ import {
   QuizBattlePublicState,
   QuizBattlePrivateState,
   QuizQuestionPublic,
-} from '@crowdparty/shared';
+} from '@partyhive/shared';
 import { BaseGame } from '../BaseGame';
 import { Room } from '../../room/Room';
 

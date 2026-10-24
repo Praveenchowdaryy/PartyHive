@@ -4,9 +4,9 @@ import { Navbar } from '@/components/layout/Navbar';
 import { Footer } from '@/components/layout/Footer';
 
 export const metadata: Metadata = {
-  title: 'CrowdParty — Play Together. Laugh Louder.',
-  description: 'The all-in-one real-time multiplayer party games platform. Draw & Guess, Quiz Battle, Hot Takes, and Reaction Arena with zero downloads.',
-  keywords: ['party games', 'multiplayer', 'remote team games', 'trivia', 'drawing game', 'hot takes', 'reaction game'],
+  title: 'PartyHive — Play Together. Laugh Louder.',
+  description: 'The all-in-one real-time multiplayer party games platform. Draw & Guess, Quiz Battle, Hot Takes, Word Dash, Most Likely To, and Reaction Arena with zero downloads.',
+  keywords: ['party games', 'multiplayer', 'remote team games', 'trivia', 'drawing game', 'hot takes', 'reaction game', 'word dash', 'most likely to', 'PartyHive'],
 };
 
 export default function RootLayout({

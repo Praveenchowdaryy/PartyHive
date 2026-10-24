@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import {
   HotTakesPublicState,
   HotTakesPrivateState,
-} from '@crowdparty/shared';
+} from '@partyhive/shared';
 import { Flame, CheckCircle2, Award, Users, ThumbsUp } from 'lucide-react';
 
 interface HotTakesViewProps {

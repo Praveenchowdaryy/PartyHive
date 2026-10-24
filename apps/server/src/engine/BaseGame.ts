@@ -2,7 +2,7 @@ import {
   GameLifecyclePhase,
   PlayerScoreSummary,
   GameResultPayload,
-} from '@crowdparty/shared';
+} from '@partyhive/shared';
 import { Room } from '../room/Room';
 
 export abstract class BaseGame {

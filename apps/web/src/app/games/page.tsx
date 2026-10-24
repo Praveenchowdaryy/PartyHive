@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { GAME_CATALOGUE } from '@crowdparty/shared';
+import { GAME_CATALOGUE } from '@partyhive/shared';
 import {
   Search,
   Users,

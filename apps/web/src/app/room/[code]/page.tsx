@@ -9,7 +9,7 @@ import {
   ChatMessage,
   EmojiReaction,
   DrawStroke,
-} from '@crowdparty/shared';
+} from '@partyhive/shared';
 import {
   getSocket,
   getSavedSession,

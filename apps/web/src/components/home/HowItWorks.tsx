@@ -43,7 +43,7 @@ export const HowItWorks: React.FC = () => {
             <span>Frictionless Flow</span>
           </div>
           <h2 className="text-3xl sm:text-4xl font-black text-white tracking-tight">
-            How CrowdParty Operates
+            How PartyHive Operates
           </h2>
           <p className="text-slate-400 text-sm sm:text-base mt-2">
             No app store downloads. No account logins. Built for fast multiplayer fun.

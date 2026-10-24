@@ -1,6 +1,6 @@
 services:
   - type: web
-    name: crowdparty-server
+    name: partyhive-server
     runtime: node
     plan: free
     buildCommand: npm install && npm run build:server

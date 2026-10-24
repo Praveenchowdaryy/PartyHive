@@ -1,5 +1,5 @@
 import React from 'react';
-import { AVATAR_OPTIONS } from '@crowdparty/shared';
+import { AVATAR_OPTIONS } from '@partyhive/shared';
 import { PlayerAvatar } from './PlayerAvatar';
 
 interface AvatarPickerProps {

@@ -38,7 +38,7 @@ export const Footer: React.FC = () => {
         </div>
 
         <div className="border-t border-border/40 mt-8 pt-6 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500 gap-4">
-          <p>© {new Date().getFullYear()} CrowdParty. Real-time party platform.</p>
+          <p>© {new Date().getFullYear()} PartyHive. Real-time party platform.</p>
           <p className="flex items-center gap-1">
             Built with <Heart className="w-3.5 h-3.5 text-coral fill-coral" /> for teams & friends everywhere.
           </p>

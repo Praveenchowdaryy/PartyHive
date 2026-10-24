@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import {
   QuizBattlePublicState,
   QuizBattlePrivateState,
-} from '@crowdparty/shared';
+} from '@partyhive/shared';
 import { Sparkles, CheckCircle2, XCircle, Info, Zap, HelpCircle } from 'lucide-react';
 
 interface QuizBattleViewProps {

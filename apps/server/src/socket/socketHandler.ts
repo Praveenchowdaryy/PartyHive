@@ -3,7 +3,7 @@ import {
   ClientToServerEvents,
   ServerToClientEvents,
   RoomSettings,
-} from '@crowdparty/shared';
+} from '@partyhive/shared';
 import { RoomManager } from '../room/RoomManager';
 
 export function setupSocketHandlers(

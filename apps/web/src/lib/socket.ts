@@ -1,5 +1,5 @@
 import { io, Socket } from 'socket.io-client';
-import { ClientToServerEvents, ServerToClientEvents } from '@crowdparty/shared';
+import { ClientToServerEvents, ServerToClientEvents } from '@partyhive/shared';
 
 let socket: Socket<ServerToClientEvents, ClientToServerEvents> | null = null;
 

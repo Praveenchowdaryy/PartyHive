@@ -3,7 +3,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { GAME_CATALOGUE } from '@crowdparty/shared';
+import { GAME_CATALOGUE } from '@partyhive/shared';
 import { Users, Clock, ArrowRight, Sparkles, CheckCircle2 } from 'lucide-react';
 import { getGameVisual } from '../brand/GameArt';
 

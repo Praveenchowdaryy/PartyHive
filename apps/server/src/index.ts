@@ -7,7 +7,7 @@ import {
   ClientToServerEvents,
   ServerToClientEvents,
   GAME_CATALOGUE,
-} from '@crowdparty/shared';
+} from '@partyhive/shared';
 import { setupSocketHandlers } from './socket/socketHandler';
 import { RoomManager } from './room/RoomManager';
 
@@ -94,7 +94,7 @@ const io = new Server<ClientToServerEvents, ServerToClientEvents>(server, {
 setupSocketHandlers(io);
 
 server.listen(Number(PORT), '0.0.0.0', () => {
-  console.log(`🎮 CrowdParty Real-Time Game Server running on port ${PORT} (0.0.0.0)`);
+  console.log(`🎮 PartyHive Real-Time Game Server running on port ${PORT} (0.0.0.0)`);
   console.log(`✨ Health check: http://localhost:${PORT}/health`);
 });
 

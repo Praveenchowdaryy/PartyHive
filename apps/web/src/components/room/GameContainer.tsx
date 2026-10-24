@@ -8,7 +8,7 @@ import {
   ChatMessage,
   EmojiReaction,
   DrawStroke,
-} from '@crowdparty/shared';
+} from '@partyhive/shared';
 import { DrawAndGuessView } from './games/DrawAndGuessView';
 import { QuizBattleView } from './games/QuizBattleView';
 import { HotTakesView } from './games/HotTakesView';

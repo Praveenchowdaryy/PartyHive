@@ -6,7 +6,7 @@ import {
   RoomSnapshot,
   Player,
   GAME_CATALOGUE,
-} from '@crowdparty/shared';
+} from '@partyhive/shared';
 import {
   Copy,
   Check,
@@ -66,8 +66,8 @@ export const WaitingLobby: React.FC<WaitingLobbyProps> = ({
     if (navigator.share) {
       try {
         await navigator.share({
-          title: 'Join CrowdParty Room',
-          text: `Join my multiplayer party room (${room.code}) on CrowdParty!`,
+          title: 'Join PartyHive Room',
+          text: `Join my multiplayer party room (${room.code}) on PartyHive!`,
           url,
         });
         return;

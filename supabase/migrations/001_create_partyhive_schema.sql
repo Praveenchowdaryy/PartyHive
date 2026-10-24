@@ -1,5 +1,5 @@
 -- ====================================================================
--- CrowdParty PostgreSQL Schema (Supabase Migrations)
+-- PartyHive PostgreSQL Schema (Supabase Migrations)
 -- Authoritative multiplayer party game platform
 -- ====================================================================
 

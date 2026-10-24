@@ -6,7 +6,7 @@ import {
   DrawAndGuessPrivateState,
   DrawStroke,
   DrawPoint,
-} from '@crowdparty/shared';
+} from '@partyhive/shared';
 import {
   Palette,
   Eraser,

@@ -7,7 +7,7 @@ import {
   EmojiReaction,
   GameResultPayload,
   DrawStroke,
-} from '@crowdparty/shared';
+} from '@partyhive/shared';
 import { BaseGame } from '../engine/BaseGame';
 import { GameFactory } from '../engine/GameFactory';
 import { DrawAndGuessGame } from '../engine/games/DrawAndGuessGame';
@@ -352,7 +352,7 @@ export class Room {
     const message: ChatMessage = {
       id: `sys_${Math.random().toString(36).substring(2, 9)}`,
       playerId: 'system',
-      nickname: 'CrowdParty',
+      nickname: 'PartyHive',
       avatar: 'party',
       text,
       timestamp: Date.now(),

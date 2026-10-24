@@ -1,4 +1,4 @@
-import { GameResultPayload } from '@crowdparty/shared';
+import { GameResultPayload } from '@partyhive/shared';
 
 export interface PersistentGameSession {
   roomCode: string;

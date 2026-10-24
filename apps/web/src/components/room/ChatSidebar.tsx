@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useRef, useEffect } from 'react';
-import { ChatMessage, EmojiReaction } from '@crowdparty/shared';
+import { ChatMessage, EmojiReaction } from '@partyhive/shared';
 import { Send, MessageSquare, Sparkles, X } from 'lucide-react';
 import { PlayerAvatar } from '../common/PlayerAvatar';
 
