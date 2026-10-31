@@ -123,15 +123,16 @@ export const GameContainer: React.FC<GameContainerProps> = ({
     <div className="max-w-7xl mx-auto space-y-4">
       {/* Top Game HUD Bar */}
       <div className="glass-panel px-4 py-3 sm:px-6 sm:py-3 rounded-2xl border border-border flex items-center justify-between gap-4">
-        {/* Left: Room Code & Game Name */}
+        {/* Left: Room Code, Switch Game Action, & Game Name */}
         <div className="flex items-center gap-3">
           {currentPlayer.isHost && (
             <button
               onClick={onReturnToLobby}
-              className="p-1.5 rounded-xl bg-surface-elevated hover:bg-surface border border-border text-slate-400 hover:text-white transition-colors cursor-pointer"
-              title="Return to Lobby"
+              className="px-3 py-1.5 rounded-xl bg-surface-elevated hover:bg-brand-500/20 border border-border/80 text-xs font-bold text-slate-300 hover:text-white transition-all flex items-center gap-1.5 cursor-pointer shadow-sm active:scale-95 shrink-0"
+              title="Return to lobby to switch games or manage players"
             >
-              <ArrowLeft className="w-4 h-4" />
+              <ArrowLeft className="w-3.5 h-3.5 text-brand-400" />
+              <span>Switch Game</span>
             </button>
           )}
 

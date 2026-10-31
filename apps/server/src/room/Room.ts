@@ -14,6 +14,8 @@ import { DrawAndGuessGame } from '../engine/games/DrawAndGuessGame';
 import { QuizBattleGame } from '../engine/games/QuizBattleGame';
 import { HotTakesGame } from '../engine/games/HotTakesGame';
 import { ReactionArenaGame } from '../engine/games/ReactionArenaGame';
+import { WordDashGame } from '../engine/games/WordDashGame';
+import { MostLikelyToGame } from '../engine/games/MostLikelyToGame';
 
 export class Room {
   public readonly code: string;
@@ -189,6 +191,7 @@ export class Room {
       type: 'room:game_selected',
       payload: { gameId },
     });
+    this.broadcastSnapshot();
 
     this.sendSystemMessage(`🎯 Host changed game to: ${gameId}`);
   }
@@ -484,6 +487,31 @@ export class Room {
         const priv = rg.getPrivateState(bot.id);
         if (pub.arenaStatus === 'SIGNAL_ACTIVE' && !priv.hasReacted && Math.random() < 0.15) {
           rg.handleAction(bot.id, { type: 'react', payload: {} });
+        }
+      } else if (this.activeGame.id === 'word-dash') {
+        const wg = this.activeGame as WordDashGame;
+        const priv = wg.getPrivateState(bot.id);
+        if (!priv.hasSolved && Math.random() < 0.08) {
+          const currentWord = (wg as any).words?.[(wg as any).currentWordIndex]?.answer;
+          if (currentWord) {
+            wg.handleAction(bot.id, { type: 'submit_word', payload: { word: currentWord } });
+          }
+        }
+      } else if (this.activeGame.id === 'most-likely-to') {
+        const mg = this.activeGame as MostLikelyToGame;
+        const priv = mg.getPrivateState(bot.id);
+        if (!priv.hasVoted && Math.random() < 0.1) {
+          const candidateIds = Array.from(this.players.keys());
+          const randomTarget = candidateIds[Math.floor(Math.random() * candidateIds.length)];
+          mg.handleAction(bot.id, { type: 'vote_player', payload: { targetPlayerId: randomTarget } });
+        }
+      } else if (this.activeGame.id === 'draw-and-guess') {
+        const dg = this.activeGame as DrawAndGuessGame;
+        if ((dg as any).isSelectingWord && (dg as any).drawerId === bot.id) {
+          const choices = (dg as any).wordChoices;
+          if (choices && choices.length > 0) {
+            dg.selectWord(choices[0]);
+          }
         }
       }
     }

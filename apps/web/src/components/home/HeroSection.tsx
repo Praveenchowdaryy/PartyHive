@@ -1,11 +1,11 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { AvatarPicker } from '../common/AvatarPicker';
 import { PlayerAvatar } from '../common/PlayerAvatar';
-import { getLastUserProfile, saveSession, getSocket } from '@/lib/socket';
+import { getLastUserProfile, saveSession, getSocket, warmupServer } from '@/lib/socket';
 import {
   Sparkles,
   ArrowRight,
@@ -18,6 +18,8 @@ import {
   Gamepad2,
   Palette,
   Flame,
+  CheckCircle2,
+  Clock,
 } from 'lucide-react';
 
 export const HeroSection: React.FC = () => {
@@ -27,13 +29,50 @@ export const HeroSection: React.FC = () => {
   const [avatar, setAvatar] = useState('cat');
   const [roomCode, setRoomCode] = useState('');
   const [loading, setLoading] = useState(false);
+  const [elapsedSec, setElapsedSec] = useState(0);
   const [errorMessage, setErrorMessage] = useState('');
+  const [isServerReady, setIsServerReady] = useState(false);
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
 
+  // Eagerly connect socket and warm up server as soon as the user arrives on the home page
   useEffect(() => {
     const saved = getLastUserProfile();
     if (saved.nickname) setNickname(saved.nickname);
     if (saved.avatar) setAvatar(saved.avatar);
+
+    warmupServer();
+    const socket = getSocket();
+    if (socket.connected) {
+      setIsServerReady(true);
+    }
+
+    const onConnect = () => setIsServerReady(true);
+    const onDisconnect = () => setIsServerReady(false);
+
+    socket.on('connect', onConnect);
+    socket.on('disconnect', onDisconnect);
+
+    return () => {
+      socket.off('connect', onConnect);
+      socket.off('disconnect', onDisconnect);
+    };
   }, []);
+
+  // Timer to track slow cold-starts on Render free tier
+  useEffect(() => {
+    if (loading) {
+      setElapsedSec(0);
+      timerRef.current = setInterval(() => {
+        setElapsedSec((prev) => prev + 1);
+      }, 1000);
+    } else {
+      if (timerRef.current) clearInterval(timerRef.current);
+      setElapsedSec(0);
+    }
+    return () => {
+      if (timerRef.current) clearInterval(timerRef.current);
+    };
+  }, [loading]);
 
   const handleCreate = (e: React.FormEvent) => {
     e.preventDefault();
@@ -49,13 +88,20 @@ export const HeroSection: React.FC = () => {
       socket.connect();
     }
 
+    // Safety timeout in case cloud server is cold-starting
+    const timeoutHandle = setTimeout(() => {
+      setLoading(false);
+      setErrorMessage('Server connection took longer than expected. Please tap Create Room again.');
+    }, 28000);
+
     socket.emit(
       'room:create',
       { nickname: nickname.trim(), avatar },
       (res) => {
+        clearTimeout(timeoutHandle);
         setLoading(false);
         if (res.success && res.roomCode && res.sessionToken) {
-          saveSession(res.roomCode, res.sessionToken, nickname.trim(), avatar);
+          saveSession(res.roomCode, res.sessionToken, nickname.trim(), avatar, res.playerId);
           router.push(`/room/${res.roomCode}`);
         } else {
           setErrorMessage(res.error || 'Failed to initialize room. Please retry.');
@@ -83,13 +129,19 @@ export const HeroSection: React.FC = () => {
       socket.connect();
     }
 
+    const timeoutHandle = setTimeout(() => {
+      setLoading(false);
+      setErrorMessage('Connection timed out. Please check room code and retry.');
+    }, 25000);
+
     socket.emit(
       'room:join',
       { roomCode: cleanCode, nickname: nickname.trim(), avatar },
       (res) => {
+        clearTimeout(timeoutHandle);
         setLoading(false);
         if (res.success && res.roomCode && res.sessionToken) {
-          saveSession(res.roomCode, res.sessionToken, nickname.trim(), avatar);
+          saveSession(res.roomCode, res.sessionToken, nickname.trim(), avatar, res.playerId);
           router.push(`/room/${res.roomCode}`);
         } else {
           setErrorMessage(res.error || 'Room not found or game has concluded.');
@@ -189,6 +241,19 @@ export const HeroSection: React.FC = () => {
           <div id="join" className="lg:col-span-5 w-full max-w-md mx-auto">
             <div className="glass-panel p-6 sm:p-8 rounded-3xl shadow-glow-lg border border-border/90 relative">
               
+              {/* Server Connection Live Status Indicator */}
+              <div className="flex items-center justify-between mb-4 px-3 py-1.5 rounded-xl bg-surface/70 border border-border/70 text-[11px]">
+                <div className="flex items-center gap-2">
+                  <span className={`w-2 h-2 rounded-full ${isServerReady ? 'bg-mint animate-pulse' : 'bg-yellow animate-ping'}`} />
+                  <span className={isServerReady ? 'text-mint font-semibold' : 'text-yellow font-semibold'}>
+                    {isServerReady ? 'Game Server Online' : 'Connecting to Server...'}
+                  </span>
+                </div>
+                <span className="text-slate-400 font-mono text-[10px]">
+                  {isServerReady ? '⚡ Instant' : 'Free tier spinning up'}
+                </span>
+              </div>
+
               {/* Sliding Tab Segmented Control */}
               <div className="relative flex rounded-2xl bg-surface p-1.5 mb-6 border border-border/80">
                 <button
@@ -302,7 +367,16 @@ export const HeroSection: React.FC = () => {
                   className="w-full mt-3 py-3.5 px-6 rounded-xl text-sm font-black text-white bg-gradient-to-r from-brand-600 via-brand-500 to-coral hover:opacity-95 shadow-glow transition-all disabled:opacity-50 flex items-center justify-center gap-2 cursor-pointer"
                 >
                   {loading ? (
-                    <span className="inline-block w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                    <div className="flex items-center gap-2">
+                      <span className="inline-block w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                      <span>
+                        {elapsedSec > 2
+                          ? `Waking cloud server... (${elapsedSec}s)`
+                          : tab === 'create'
+                          ? 'Initializing Party Room...'
+                          : 'Joining Party Room...'}
+                      </span>
+                    </div>
                   ) : tab === 'create' ? (
                     <>
                       <Sparkles className="w-4 h-4 text-yellow" />

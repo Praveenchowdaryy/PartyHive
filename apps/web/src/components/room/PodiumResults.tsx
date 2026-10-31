@@ -214,7 +214,7 @@ export const PodiumResults: React.FC<PodiumResultsProps> = ({
               className="w-full sm:w-auto px-6 py-3.5 rounded-2xl bg-surface-elevated hover:bg-surface-elevated/80 border border-border text-white font-bold text-sm flex items-center justify-center gap-2 transition-colors cursor-pointer"
             >
               <Home className="w-4 h-4 text-brand-400" />
-              <span>Return to Waiting Lobby</span>
+              <span>Switch Game / Lobby</span>
             </motion.button>
           </>
         ) : (

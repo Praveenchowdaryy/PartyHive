@@ -31,6 +31,8 @@ export function setupSocketHandlers(
           success: true,
           roomCode: room.code,
           sessionToken,
+          playerId: player.id,
+          isHost: player.isHost,
         });
       } catch (err: any) {
         callback({
@@ -65,6 +67,8 @@ export function setupSocketHandlers(
           success: true,
           roomCode: room.code,
           sessionToken: newToken,
+          playerId: player.id,
+          isHost: player.isHost,
         });
       } catch (err: any) {
         callback({
@@ -102,7 +106,11 @@ export function setupSocketHandlers(
           room.sendGameStateToPlayer(playerId);
         }
 
-        callback({ success: true });
+        callback({
+          success: true,
+          playerId: player.id,
+          isHost: player.isHost,
+        });
       } catch (err: any) {
         callback({ success: false, error: err.message || 'Reconnection error' });
       }

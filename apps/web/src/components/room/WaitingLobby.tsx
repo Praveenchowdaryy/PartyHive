@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   RoomSnapshot,
@@ -54,9 +54,16 @@ export const WaitingLobby: React.FC<WaitingLobbyProps> = ({
   const [codeCopied, setCodeCopied] = useState(false);
   const [linkCopied, setLinkCopied] = useState(false);
   const [showSettingsModal, setShowSettingsModal] = useState(false);
+  const [isStartingMatch, setIsStartingMatch] = useState(false);
+  const [selectedId, setSelectedId] = useState(room.selectedGameId);
 
-  const isHost = currentPlayer.isHost;
-  const selectedGame = GAME_CATALOGUE.find((g) => g.id === room.selectedGameId) || GAME_CATALOGUE[0];
+  useEffect(() => {
+    setSelectedId(room.selectedGameId);
+  }, [room.selectedGameId]);
+
+  // Resilient host detection: either currentPlayer.isHost or matches hostId or only 1 player
+  const isHost = currentPlayer.isHost || room.hostId === currentPlayer.id || room.players.length === 1;
+  const selectedGame = GAME_CATALOGUE.find((g) => g.id === selectedId) || GAME_CATALOGUE[0];
   const selectedVisual = getGameVisual(selectedGame.id);
 
   const handleCopyLink = async () => {
@@ -203,14 +210,27 @@ export const WaitingLobby: React.FC<WaitingLobbyProps> = ({
 
         {isHost ? (
           <motion.button
-            whileHover={{ scale: 1.015 }}
-            whileTap={{ scale: 0.985 }}
+            whileHover={!isStartingMatch ? { scale: 1.015 } : {}}
+            whileTap={!isStartingMatch ? { scale: 0.985 } : {}}
             type="button"
-            onClick={onStartGame}
-            className="w-full py-4 px-6 rounded-2xl text-base font-black text-white bg-gradient-to-r from-brand-600 via-brand-500 to-coral hover:opacity-95 shadow-glow-lg transition-all flex items-center justify-center gap-2 cursor-pointer"
+            disabled={isStartingMatch}
+            onClick={() => {
+              setIsStartingMatch(true);
+              onStartGame();
+            }}
+            className="w-full py-4 px-6 rounded-2xl text-base font-black text-white bg-gradient-to-r from-brand-600 via-brand-500 to-coral hover:opacity-95 shadow-glow-lg transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-60"
           >
-            <Play className="w-5 h-5 fill-white" />
-            <span>START MATCH NOW</span>
+            {isStartingMatch ? (
+              <>
+                <span className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                <span>STARTING MATCH...</span>
+              </>
+            ) : (
+              <>
+                <Play className="w-5 h-5 fill-white" />
+                <span>START MATCH NOW</span>
+              </>
+            )}
           </motion.button>
         ) : (
           <div className="w-full py-3.5 px-6 rounded-2xl text-center bg-surface-elevated/70 border border-border text-xs sm:text-sm text-slate-400 font-medium">
@@ -350,7 +370,7 @@ export const WaitingLobby: React.FC<WaitingLobbyProps> = ({
           {/* 6 Game Cards with Unique Art Banners */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             {GAME_CATALOGUE.map((game) => {
-              const isSelected = game.id === room.selectedGameId;
+              const isSelected = game.id === selectedId;
               const visual = getGameVisual(game.id);
 
               return (
@@ -358,13 +378,17 @@ export const WaitingLobby: React.FC<WaitingLobbyProps> = ({
                   key={game.id}
                   whileHover={isHost ? { y: -2 } : {}}
                   type="button"
-                  disabled={!isHost}
-                  onClick={() => onSelectGame(game.id)}
+                  onClick={() => {
+                    if (isHost) {
+                      setSelectedId(game.id);
+                      onSelectGame(game.id);
+                    }
+                  }}
                   className={`text-left p-3.5 rounded-2xl border transition-all duration-200 relative overflow-hidden ${
                     isSelected
-                      ? 'border-brand-500 bg-brand-500/15 shadow-glow scale-[1.01]'
+                      ? 'border-brand-500 bg-brand-500/20 shadow-glow scale-[1.01] ring-2 ring-brand-500/40'
                       : 'border-border/60 bg-surface-elevated/40 hover:border-brand-500/40 hover:bg-surface-elevated/70'
-                  } ${!isHost && 'cursor-default'}`}
+                  } ${isHost ? 'cursor-pointer active:scale-95' : 'cursor-default'}`}
                 >
                   <div className="mb-2 relative">
                     {visual.banner}

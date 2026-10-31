@@ -101,14 +101,28 @@ export default function RoomPage() {
         setPublicGameState(null);
         setPrivateGameState(null);
       }
-      // Find current player
+      // Reliably locate current player using saved playerId or nickname
       const saved = getSavedSession(roomCode);
-      if (saved) {
-        const me = snapshot.players.find(p => p.nickname === saved.nickname) || snapshot.players[0];
-        if (me) setCurrentPlayer(me);
-      } else if (snapshot.players.length > 0) {
-        setCurrentPlayer(snapshot.players[0]);
-      }
+      const me = (saved?.playerId ? snapshot.players.find(p => p.id === saved.playerId) : null)
+        || (saved?.nickname ? snapshot.players.find(p => p.nickname.toLowerCase() === saved.nickname.toLowerCase()) : null)
+        || (snapshot.players.length === 1 ? snapshot.players[0] : null)
+        || snapshot.players[0];
+      if (me) setCurrentPlayer(me);
+    };
+
+    const onGameSelected = ({ gameId }: { gameId: string }) => {
+      setRoomSnapshot((prev) => (prev ? { ...prev, selectedGameId: gameId } : prev));
+    };
+
+    const onPlayerUpdated = (player: Player) => {
+      setRoomSnapshot((prev) => {
+        if (!prev) return prev;
+        return {
+          ...prev,
+          players: prev.players.map((p) => (p.id === player.id ? player : p)),
+        };
+      });
+      setCurrentPlayer((prev) => (prev && prev.id === player.id ? player : prev));
     };
 
     const onPlayerJoined = (player: Player) => {
@@ -151,7 +165,7 @@ export default function RoomPage() {
       setPublicGameState(state);
       if (state && state.phase !== 'RESULTS') {
         setGameResults(null);
-      } else if (state && state.phase === 'RESULTS' && !gameResults) {
+      } else if (state && state.phase === 'RESULTS') {
         setGameResults({
           gameId: state.gameId,
           winnerIds: state.leaderboard?.[0]?.playerId ? [state.leaderboard[0].playerId] : [],
@@ -200,6 +214,8 @@ export default function RoomPage() {
     socket.on('connect', onConnect);
     socket.on('disconnect', onDisconnect);
     socket.on('room:snapshot', onSnapshot);
+    socket.on('room:game_selected', onGameSelected);
+    socket.on('room:player_updated', onPlayerUpdated);
     socket.on('room:player_joined', onPlayerJoined);
     socket.on('room:player_left', onPlayerLeft);
     socket.on('room:chat_message', onChatMessage);
@@ -219,6 +235,8 @@ export default function RoomPage() {
       socket.off('connect', onConnect);
       socket.off('disconnect', onDisconnect);
       socket.off('room:snapshot', onSnapshot);
+      socket.off('room:game_selected', onGameSelected);
+      socket.off('room:player_updated', onPlayerUpdated);
       socket.off('room:player_joined', onPlayerJoined);
       socket.off('room:player_left', onPlayerLeft);
       socket.off('room:chat_message', onChatMessage);
@@ -230,7 +248,7 @@ export default function RoomPage() {
       socket.off('game:clear_canvas', onClearCanvas);
       socket.off('error', onError);
     };
-  }, [roomCode, gameResults]);
+  }, [roomCode]);
 
   const handleJoinSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -250,8 +268,20 @@ export default function RoomPage() {
       (res) => {
         setIsJoining(false);
         if (res.success && res.sessionToken) {
-          saveSession(roomCode, res.sessionToken, joinNickname.trim(), joinAvatar);
+          saveSession(roomCode, res.sessionToken, joinNickname.trim(), joinAvatar, res.playerId);
           setNeedsJoinModal(false);
+          if (res.playerId) {
+            setCurrentPlayer({
+              id: res.playerId,
+              nickname: joinNickname.trim(),
+              avatar: joinAvatar,
+              isHost: res.isHost || false,
+              isOnline: true,
+              isReady: false,
+              score: 0,
+              lastActive: Date.now(),
+            });
+          }
         } else {
           if (res.error?.toLowerCase().includes('not found') || res.error?.toLowerCase().includes('expired')) {
             setRoomNotFound(true);
@@ -263,6 +293,8 @@ export default function RoomPage() {
   };
 
   const handleSelectGame = (gameId: string) => {
+    // Optimistic UI update so the game selection highlights instantly on click
+    setRoomSnapshot((prev) => (prev ? { ...prev, selectedGameId: gameId } : prev));
     getSocket().emit('room:select_game', { gameId });
   };
 

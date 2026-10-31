@@ -112,7 +112,12 @@ export const HotTakesView: React.FC<HotTakesViewProps> = ({
         <motion.div
           whileHover={(!privateState.hasVoted && !isRevealPhase) ? { scale: 1.015 } : {}}
           whileTap={(!privateState.hasVoted && !isRevealPhase) ? { scale: 0.985 } : {}}
-          onClick={() => !privateState.hasVoted && !isRevealPhase && setSelectedChoice('A')}
+          onClick={() => {
+            if (!privateState.hasVoted && !isRevealPhase) {
+              setSelectedChoice('A');
+              if (!selectedPrediction) setSelectedPrediction('A');
+            }
+          }}
           className={`p-6 rounded-3xl border transition-all cursor-pointer flex flex-col justify-between ${
             (privateState.myVote === 'A' || selectedChoice === 'A')
               ? 'border-brand-500 bg-brand-500/20 shadow-glow scale-[1.01]'
@@ -159,7 +164,12 @@ export const HotTakesView: React.FC<HotTakesViewProps> = ({
         <motion.div
           whileHover={(!privateState.hasVoted && !isRevealPhase) ? { scale: 1.015 } : {}}
           whileTap={(!privateState.hasVoted && !isRevealPhase) ? { scale: 0.985 } : {}}
-          onClick={() => !privateState.hasVoted && !isRevealPhase && setSelectedChoice('B')}
+          onClick={() => {
+            if (!privateState.hasVoted && !isRevealPhase) {
+              setSelectedChoice('B');
+              if (!selectedPrediction) setSelectedPrediction('B');
+            }
+          }}
           className={`p-6 rounded-3xl border transition-all cursor-pointer flex flex-col justify-between ${
             (privateState.myVote === 'B' || selectedChoice === 'B')
               ? 'border-coral bg-coral/20 shadow-glow scale-[1.01]'

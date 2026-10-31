@@ -5,17 +5,36 @@ import { DrawStroke } from './games/draw-and-guess';
 export interface ClientToServerEvents {
   'room:create': (
     data: { nickname: string; avatar: string; settings?: Partial<RoomSettings> },
-    callback: (response: { success: boolean; roomCode?: string; sessionToken?: string; error?: string }) => void
+    callback: (response: {
+      success: boolean;
+      roomCode?: string;
+      sessionToken?: string;
+      playerId?: string;
+      isHost?: boolean;
+      error?: string;
+    }) => void
   ) => void;
 
   'room:join': (
     data: { roomCode: string; nickname: string; avatar: string; sessionToken?: string },
-    callback: (response: { success: boolean; roomCode?: string; sessionToken?: string; error?: string }) => void
+    callback: (response: {
+      success: boolean;
+      roomCode?: string;
+      sessionToken?: string;
+      playerId?: string;
+      isHost?: boolean;
+      error?: string;
+    }) => void
   ) => void;
 
   'room:reconnect': (
     data: { roomCode: string; sessionToken: string },
-    callback: (response: { success: boolean; error?: string }) => void
+    callback: (response: {
+      success: boolean;
+      playerId?: string;
+      isHost?: boolean;
+      error?: string;
+    }) => void
   ) => void;
 
   'room:leave': () => void;
