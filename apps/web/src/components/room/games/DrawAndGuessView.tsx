@@ -287,24 +287,24 @@ export const DrawAndGuessView: React.FC<DrawAndGuessViewProps> = ({
   };
 
   return (
-    <div className="space-y-3 select-none">
+    <div className="space-y-3.5 select-none">
       {/* Drawer / Word Status Header */}
-      <div className="glass-panel p-3.5 rounded-2xl border border-border flex flex-col sm:flex-row items-center justify-between gap-3">
+      <div className="p-4 rounded-2xl bg-[#151821] border-2 border-black shadow-[4px_4px_0px_#000] flex flex-col sm:flex-row items-center justify-between gap-3">
         <div className="flex items-center gap-3">
-          <div className="p-2 rounded-xl bg-surface-elevated border border-border">
-            <Palette className="w-5 h-5 text-brand-400" />
+          <div className="p-2.5 rounded-xl bg-[#1E2330] border-2 border-black shadow-[2px_2px_0px_#000]">
+            <Palette className="w-5 h-5 text-yellow-400" />
           </div>
           <div>
-            <span className="text-[11px] uppercase font-bold text-slate-400 tracking-wider block">
-              {isDrawer ? '🎨 You are drawing!' : `👀 ${publicState.drawerNickname || 'Teammate'} is drawing`}
+            <span className="text-[10px] uppercase font-black text-yellow-400 tracking-wider block font-mono">
+              {isDrawer ? '🎨 YOU ARE THE DRAWER!' : `👀 ${publicState.drawerNickname || 'Teammate'} is drawing`}
             </span>
-            <div className="text-base sm:text-lg font-black text-white">
+            <div className="text-base sm:text-lg font-black text-white font-display">
               {isDrawer ? (
-                <span className="text-brand-300 tracking-wide">
+                <span className="text-yellow-400 tracking-wide font-mono">
                   WORD: {privateState.secretWord || 'Choosing word...'}
                 </span>
               ) : (
-                <span className="font-mono tracking-widest text-brand-400 text-lg">
+                <span className="font-mono tracking-widest text-yellow-400 text-xl font-black">
                   {publicState.hintMask || '_ '.repeat(publicState.wordLength || 4)}
                 </span>
               )}
@@ -316,13 +316,13 @@ export const DrawAndGuessView: React.FC<DrawAndGuessViewProps> = ({
         {!isDrawer && (
           <div>
             {privateState.hasGuessed ? (
-              <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-mint/20 border border-mint/40 text-mint text-xs font-bold animate-fadeIn">
-                <CheckCircle2 className="w-4 h-4" />
+              <div className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-xl bg-arcade-mint text-black border-2 border-black shadow-[2px_2px_0px_#000] text-xs font-black uppercase animate-fadeIn">
+                <CheckCircle2 className="w-4 h-4 stroke-[3]" />
                 <span>You guessed correctly! 🎉</span>
               </div>
             ) : (
-              <div className="text-xs text-yellow font-semibold flex items-center gap-1.5 bg-yellow/10 px-3 py-1.5 rounded-xl border border-yellow/20">
-                <Sparkles className="w-3.5 h-3.5 text-yellow animate-pulse" />
+              <div className="text-xs text-yellow-400 font-mono font-bold flex items-center gap-1.5 bg-[#0B0C10] px-3.5 py-1.5 rounded-xl border border-black shadow-[2px_2px_0px_#000]">
+                <Sparkles className="w-3.5 h-3.5 text-yellow-400 animate-pulse" />
                 <span>Type guesses below!</span>
               </div>
             )}
@@ -332,10 +332,10 @@ export const DrawAndGuessView: React.FC<DrawAndGuessViewProps> = ({
 
       {/* Word Selection Modal for Drawer */}
       {isDrawer && publicState.isSelectingWord && privateState.wordChoices && (
-        <div className="glass-panel p-6 rounded-3xl border border-brand-500/50 bg-surface/95 text-center space-y-4 shadow-glow animate-fadeIn">
-          <Sparkles className="w-8 h-8 text-brand-400 mx-auto animate-pulse" />
-          <h3 className="text-xl font-black text-white">Pick a Secret Word to Draw</h3>
-          <p className="text-xs text-slate-300">
+        <div className="p-6 rounded-3xl bg-[#151821] border-2 border-black shadow-[6px_6px_0px_#000] text-center space-y-4 animate-fadeIn">
+          <Sparkles className="w-8 h-8 text-yellow-400 mx-auto animate-pulse" />
+          <h3 className="text-2xl font-black text-white font-display">Pick a Secret Word to Draw</h3>
+          <p className="text-xs text-slate-300 font-medium">
             Choose which word you want teammates to guess:
           </p>
           <div className="flex flex-wrap justify-center gap-3 pt-2">
@@ -344,7 +344,7 @@ export const DrawAndGuessView: React.FC<DrawAndGuessViewProps> = ({
                 key={choice}
                 type="button"
                 onClick={() => onSendAction('choose_word', { word: choice })}
-                className="px-6 py-3 rounded-2xl bg-gradient-to-r from-brand-600 to-brand-500 hover:from-brand-500 hover:to-brand-400 text-white font-bold text-sm shadow-glow transition-transform active:scale-95 cursor-pointer"
+                className="px-6 py-3.5 rounded-2xl bg-yellow-400 hover:bg-yellow-300 text-black font-black text-sm uppercase tracking-wider border-2 border-black shadow-[4px_4px_0px_#000] active:translate-x-[2px] active:translate-y-[2px] active:shadow-[1px_1px_0px_#000] transition-all cursor-pointer font-display"
               >
                 {choice}
               </button>
@@ -353,8 +353,8 @@ export const DrawAndGuessView: React.FC<DrawAndGuessViewProps> = ({
         </div>
       )}
 
-      {/* Synchronized Canvas Container */}
-      <div className="relative rounded-3xl overflow-hidden border border-border shadow-glow bg-[#0F1626] touch-none">
+      {/* Synchronized Canvas Container (Arcade Display Frame) */}
+      <div className="relative rounded-3xl overflow-hidden border-2 border-black shadow-[6px_6px_0px_#000] bg-[#0A0D14] touch-none">
         <canvas
           ref={canvasRef}
           onMouseDown={startDrawing}
@@ -373,18 +373,18 @@ export const DrawAndGuessView: React.FC<DrawAndGuessViewProps> = ({
 
         {/* Round Reveal Overlay */}
         {publicState.roundReveal && (
-          <div className="absolute inset-0 bg-background/90 backdrop-blur-md flex flex-col items-center justify-center p-6 text-center space-y-3 z-10 animate-fadeIn">
-            <span className="text-xs uppercase font-bold tracking-widest text-slate-400">
-              Round Complete
+          <div className="absolute inset-0 bg-[#0B0C10]/95 backdrop-blur-sm flex flex-col items-center justify-center p-6 text-center space-y-3 z-10 animate-fadeIn border-2 border-yellow-400">
+            <span className="text-xs uppercase font-black tracking-widest text-slate-400 font-mono">
+              ROUND COMPLETE
             </span>
-            <h4 className="text-2xl sm:text-3xl font-black text-white">
-              The secret word was <span className="text-brand-400 font-mono underline">{publicState.roundReveal.secretWord}</span>!
+            <h4 className="text-2xl sm:text-4xl font-black text-white font-display">
+              The secret word was <span className="text-yellow-400 font-mono underline">{publicState.roundReveal.secretWord}</span>!
             </h4>
             <div className="flex flex-wrap justify-center gap-2 pt-2">
               {Object.entries(publicState.roundReveal.scoresEarned).map(([pId, pts]) => (
                 <span
                   key={pId}
-                  className="px-3 py-1 rounded-full bg-surface-elevated text-mint border border-mint/30 text-xs font-bold"
+                  className="px-3.5 py-1 rounded-xl bg-arcade-mint text-black border-2 border-black shadow-[2px_2px_0px_#000] text-xs font-black uppercase"
                 >
                   +{pts} pts
                 </span>
@@ -394,43 +394,43 @@ export const DrawAndGuessView: React.FC<DrawAndGuessViewProps> = ({
         )}
       </div>
 
-      {/* GUESSER QUICK-GUESS BAR: Always visible directly under canvas on mobile & desktop! */}
+      {/* GUESSER QUICK-GUESS BAR: Sticky under canvas */}
       {!isDrawer && publicState.phase === 'PLAYING' && !privateState.hasGuessed && (
-        <form onSubmit={handleQuickGuessSubmit} className="glass-panel p-2 rounded-2xl border border-brand-500/40 flex gap-2 shadow-lg">
+        <form onSubmit={handleQuickGuessSubmit} className="p-2.5 rounded-2xl bg-[#151821] border-2 border-black shadow-[4px_4px_0px_#000] flex gap-2">
           <input
             type="text"
             value={quickGuessInput}
             onChange={(e) => setQuickGuessInput(e.target.value)}
-            placeholder="Type your guess here (e.g. coffee, airplane)..."
-            className="flex-1 px-4 py-2.5 rounded-xl bg-surface-elevated border border-border text-white text-sm font-semibold placeholder-slate-500 focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500/30"
+            placeholder="TYPE GUESS HERE (E.G. PIZZA, GUITAR)..."
+            className="flex-1 px-4 py-3 rounded-xl bg-[#0B0C10] border-2 border-black text-white text-sm font-black uppercase tracking-wider placeholder-slate-600 focus:outline-none focus:border-yellow-400 font-mono shadow-[inset_2px_2px_0px_#000]"
             autoComplete="off"
-            autoCapitalize="none"
+            autoCapitalize="characters"
           />
           <button
             type="submit"
-            className="px-5 py-2.5 rounded-xl bg-gradient-to-r from-brand-600 to-coral text-white font-bold text-xs uppercase tracking-wider shadow-glow hover:opacity-90 active:scale-95 transition-all flex items-center gap-1.5 cursor-pointer shrink-0"
+            className="px-6 py-3 rounded-xl bg-yellow-400 hover:bg-yellow-300 text-black font-black text-xs uppercase tracking-wider border-2 border-black shadow-[3px_3px_0px_#000] hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[4px_4px_0px_#000] active:translate-x-[2px] active:translate-y-[2px] active:shadow-[1px_1px_0px_#000] transition-all flex items-center gap-1.5 cursor-pointer shrink-0 font-display"
           >
-            <span>Guess</span>
-            <Send className="w-3.5 h-3.5" />
+            <span>GUESS</span>
+            <Send className="w-4 h-4 stroke-[2.5]" />
           </button>
         </form>
       )}
 
       {/* Drawing Toolbar (Only active for Drawer) */}
       {isDrawer && publicState.phase === 'PLAYING' && (
-        <div className="glass-panel p-3 rounded-2xl border border-border flex flex-wrap items-center justify-between gap-3">
+        <div className="p-3.5 rounded-2xl bg-[#151821] border-2 border-black shadow-[4px_4px_0px_#000] flex flex-wrap items-center justify-between gap-3">
           {/* Colors */}
-          <div className="flex items-center gap-1.5 overflow-x-auto py-1">
+          <div className="flex items-center gap-2 overflow-x-auto py-1">
             {PALETTE.map((c) => (
               <button
                 key={c}
                 type="button"
                 onClick={() => { setSelectedColor(c); setIsEraser(false); }}
                 style={{ backgroundColor: c }}
-                className={`w-7 h-7 rounded-full border-2 transition-transform cursor-pointer shrink-0 ${
+                className={`w-7 h-7 rounded-full border-2 border-black transition-transform cursor-pointer shrink-0 shadow-[2px_2px_0px_#000] ${
                   selectedColor === c && !isEraser
-                    ? 'scale-125 border-white shadow-glow'
-                    : 'border-transparent hover:scale-110'
+                    ? 'scale-125 ring-2 ring-yellow-400 ring-offset-2 ring-offset-black'
+                    : 'hover:scale-110'
                 }`}
                 title={`Color ${c}`}
               />
@@ -444,36 +444,36 @@ export const DrawAndGuessView: React.FC<DrawAndGuessViewProps> = ({
                 key={sz}
                 type="button"
                 onClick={() => setBrushSize(sz)}
-                className={`px-2.5 py-1.5 rounded-xl border text-xs font-bold transition-all cursor-pointer ${
+                className={`px-3 py-1.5 rounded-xl border-2 border-black text-xs font-black uppercase tracking-wider transition-all cursor-pointer font-mono ${
                   brushSize === sz && !isEraser
-                    ? 'border-brand-500 bg-brand-500/20 text-brand-300 shadow-sm'
-                    : 'border-border text-slate-400 hover:text-white'
+                    ? 'bg-yellow-400 text-black shadow-[2px_2px_0px_#000]'
+                    : 'bg-[#1E2330] text-slate-300 shadow-[2px_2px_0px_#000] hover:text-white'
                 }`}
               >
-                {sz === 2 ? 'Fine' : sz === 5 ? 'Medium' : 'Thick'}
+                {sz === 2 ? 'Fine' : sz === 5 ? 'Med' : 'Thick'}
               </button>
             ))}
 
             <button
               type="button"
               onClick={() => setIsEraser(!isEraser)}
-              className={`p-2 rounded-xl border transition-colors cursor-pointer ${
+              className={`p-2 rounded-xl border-2 border-black transition-all cursor-pointer shadow-[2px_2px_0px_#000] ${
                 isEraser
-                  ? 'border-brand-500 bg-brand-500/30 text-white shadow-sm'
-                  : 'border-border text-slate-400 hover:text-white'
+                  ? 'bg-yellow-400 text-black'
+                  : 'bg-[#1E2330] text-slate-300 hover:text-white'
               }`}
               title="Eraser"
             >
-              <Eraser className="w-4 h-4" />
+              <Eraser className="w-4 h-4 stroke-[2.5]" />
             </button>
 
             <button
               type="button"
               onClick={onClearCanvas}
-              className="p-2 rounded-xl border border-border hover:border-coral/50 text-slate-400 hover:text-coral transition-colors cursor-pointer"
+              className="p-2 rounded-xl border-2 border-black bg-[#1E2330] text-rose-400 hover:bg-rose-950 transition-all cursor-pointer shadow-[2px_2px_0px_#000]"
               title="Clear Canvas"
             >
-              <Trash2 className="w-4 h-4" />
+              <Trash2 className="w-4 h-4 stroke-[2.5]" />
             </button>
           </div>
         </div>

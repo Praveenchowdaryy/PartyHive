@@ -358,16 +358,16 @@ export default function RoomPage() {
   if (roomNotFound) {
     return (
       <div className="min-h-[75vh] flex items-center justify-center p-4">
-        <div className="glass-panel max-w-md w-full p-8 rounded-3xl border border-coral/40 text-center space-y-5 shadow-glow">
-          <div className="w-14 h-14 rounded-2xl bg-coral/15 border border-coral/30 text-coral flex items-center justify-center mx-auto">
-            <AlertCircle className="w-8 h-8" />
+        <div className="max-w-md w-full p-8 rounded-3xl bg-[#151821] border-2 border-black shadow-[6px_6px_0px_#000] text-center space-y-5 animate-fadeIn">
+          <div className="w-14 h-14 rounded-2xl bg-rose-950/80 border-2 border-black shadow-[3px_3px_0px_#000] text-rose-400 flex items-center justify-center mx-auto">
+            <AlertCircle className="w-8 h-8 stroke-[2.5]" />
           </div>
 
           <div>
-            <span className="text-xs font-bold text-coral uppercase tracking-wider block">
+            <span className="text-xs font-black text-rose-400 uppercase tracking-widest block font-mono">
               Room Unavailable
             </span>
-            <h2 className="text-2xl font-black text-white mt-1">
+            <h2 className="text-2xl font-black text-white mt-1 font-display">
               Room &ldquo;{roomCode}&rdquo; Expired
             </h2>
             <p className="text-xs sm:text-sm text-slate-300 mt-2 leading-relaxed">
@@ -378,14 +378,14 @@ export default function RoomPage() {
           <div className="space-y-2.5 pt-2">
             <button
               onClick={() => router.push('/#join')}
-              className="w-full py-3.5 rounded-2xl bg-gradient-to-r from-brand-600 to-coral text-white font-bold text-sm shadow-glow flex items-center justify-center gap-2 cursor-pointer"
+              className="w-full py-4 rounded-xl bg-yellow-400 hover:bg-yellow-300 text-black font-black text-xs uppercase tracking-wider border-2 border-black shadow-[4px_4px_0px_#000] active:translate-x-[2px] active:translate-y-[2px] active:shadow-[1px_1px_0px_#000] flex items-center justify-center gap-2 cursor-pointer font-display"
             >
-              <Sparkles className="w-4 h-4 text-yellow" />
+              <Sparkles className="w-4 h-4" />
               <span>Create New Room</span>
             </button>
             <button
               onClick={() => router.push('/')}
-              className="w-full py-3 rounded-2xl bg-surface-elevated hover:bg-surface border border-border text-slate-300 font-bold text-xs flex items-center justify-center gap-1.5 cursor-pointer"
+              className="w-full py-3 rounded-xl bg-[#1E2330] hover:bg-[#252B3B] border-2 border-black shadow-[2px_2px_0px_#000] text-slate-300 font-black text-xs uppercase tracking-wider flex items-center justify-center gap-1.5 cursor-pointer font-mono"
             >
               <Home className="w-3.5 h-3.5" />
               <span>Back to Home</span>
@@ -400,30 +400,30 @@ export default function RoomPage() {
   if (needsJoinModal) {
     return (
       <div className="min-h-[80vh] flex items-center justify-center p-4">
-        <div className="glass-panel max-w-md w-full p-6 sm:p-8 rounded-3xl border border-border shadow-glow space-y-6 animate-fadeIn">
+        <div className="max-w-md w-full p-6 sm:p-8 rounded-3xl bg-[#151821] border-2 border-black shadow-[6px_6px_0px_#000] space-y-6 animate-fadeIn">
           <div className="text-center space-y-2">
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-brand-500/20 text-brand-300 text-xs font-bold border border-brand-500/30">
-              <Sparkles className="w-3.5 h-3.5 text-brand-400" />
+            <div className="inline-flex items-center gap-1.5 px-3.5 py-1 rounded-full bg-[#1E2330] text-yellow-400 text-xs font-black uppercase tracking-wider border-2 border-black shadow-[2px_2px_0px_#000] font-mono">
+              <Sparkles className="w-3.5 h-3.5" />
               <span>You Have Been Invited!</span>
             </div>
-            <h2 className="text-2xl sm:text-3xl font-black text-white">
-              Join Room: <span className="font-mono text-brand-400">{roomCode}</span>
+            <h2 className="text-2xl sm:text-3xl font-black text-white font-display">
+              Join Room: <span className="font-mono text-yellow-400">{roomCode}</span>
             </h2>
-            <p className="text-xs text-slate-400">
+            <p className="text-xs text-slate-300">
               Pick your nickname and character to enter the room.
             </p>
           </div>
 
           {errorMessage && (
-            <div className="p-3 rounded-xl bg-coral/15 border border-coral/40 text-coral-light text-xs flex items-center gap-2">
-              <AlertCircle className="w-4 h-4 text-coral shrink-0" />
+            <div className="p-3 rounded-xl bg-rose-950/80 border-2 border-black shadow-[2px_2px_0px_#000] text-rose-300 text-xs font-bold flex items-center gap-2">
+              <AlertCircle className="w-4 h-4 text-rose-400 shrink-0" />
               <span>{errorMessage}</span>
             </div>
           )}
 
           <form onSubmit={handleJoinSubmit} className="space-y-4">
             <div>
-              <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5">
+              <label className="block text-[11px] font-black text-slate-300 uppercase tracking-wider mb-1.5 font-mono">
                 Your Nickname
               </label>
               <input
@@ -432,7 +432,7 @@ export default function RoomPage() {
                 value={joinNickname}
                 onChange={(e) => setJoinNickname(e.target.value)}
                 placeholder="e.g. PixelChamp"
-                className="w-full px-4 py-3 rounded-xl bg-surface-elevated border border-border text-white text-sm font-semibold placeholder-slate-500 focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500/30"
+                className="w-full px-4 py-3 rounded-xl bg-[#0B0C10] border-2 border-black text-white text-sm font-bold placeholder-slate-600 focus:outline-none focus:border-yellow-400 shadow-[inset_2px_2px_0px_#000]"
                 autoFocus
                 required
               />
@@ -443,14 +443,14 @@ export default function RoomPage() {
             <button
               type="submit"
               disabled={isJoining}
-              className="w-full py-3.5 rounded-2xl text-sm font-bold text-white bg-gradient-to-r from-brand-600 to-coral hover:opacity-95 shadow-glow transition-all flex items-center justify-center gap-2 disabled:opacity-50 cursor-pointer"
+              className="w-full py-4 rounded-xl text-xs font-black uppercase tracking-wider text-black bg-yellow-400 hover:bg-yellow-300 border-2 border-black shadow-[4px_4px_0px_#000] hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[5px_5px_0px_#000] active:translate-x-[2px] active:translate-y-[2px] active:shadow-[1px_1px_0px_#000] transition-all flex items-center justify-center gap-2 disabled:opacity-50 cursor-pointer font-display"
             >
               {isJoining ? (
-                <span className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                <span className="w-5 h-5 border-2 border-black border-t-transparent rounded-full animate-spin" />
               ) : (
                 <>
                   <span>Enter Room</span>
-                  <ArrowRight className="w-4 h-4" />
+                  <ArrowRight className="w-4 h-4 stroke-[3]" />
                 </>
               )}
             </button>
@@ -460,7 +460,7 @@ export default function RoomPage() {
             <button
               type="button"
               onClick={() => router.push('/')}
-              className="text-xs text-slate-400 hover:text-white inline-flex items-center gap-1 cursor-pointer"
+              className="text-xs text-slate-400 hover:text-white inline-flex items-center gap-1 cursor-pointer font-bold uppercase font-mono"
             >
               <Home className="w-3.5 h-3.5" />
               <span>Back to Home</span>
@@ -476,27 +476,27 @@ export default function RoomPage() {
     return (
       <div className="min-h-[80vh] flex flex-col items-center justify-center p-4 text-center space-y-4 animate-fadeIn">
         <div className="relative">
-          <div className="w-12 h-12 border-3 border-brand-500 border-t-transparent rounded-full animate-spin mx-auto" />
-          <Radio className="w-5 h-5 text-brand-400 absolute inset-0 m-auto" />
+          <div className="w-14 h-14 border-4 border-yellow-400 border-t-transparent rounded-full animate-spin mx-auto" />
+          <Radio className="w-6 h-6 text-yellow-400 absolute inset-0 m-auto" />
         </div>
 
         <div className="space-y-1">
-          <h2 className="text-xl sm:text-2xl font-black text-white">
+          <h2 className="text-xl sm:text-2xl font-black text-white font-display uppercase">
             Connecting to Room {roomCode}...
           </h2>
-          <p className="text-xs text-slate-400">
-            Synchronizing game session and lobby presence
+          <p className="text-xs text-slate-400 font-mono">
+            Synchronizing room presence and game session
           </p>
         </div>
 
         {/* Cold-start helper note for free cloud hosts (Render / Railway) */}
         {connectingElapsedSec > 4 && (
-          <div className="glass-panel p-4 rounded-2xl border border-yellow/30 max-w-sm mx-auto text-xs text-slate-300 space-y-2 animate-fadeIn">
-            <p className="text-yellow font-bold">
-              ⚡ Waking up game server instance...
+          <div className="p-4 rounded-2xl bg-[#151821] border-2 border-black shadow-[4px_4px_0px_#000] max-w-sm mx-auto text-xs text-slate-300 space-y-2 animate-fadeIn">
+            <p className="text-yellow-400 font-black uppercase tracking-wider font-mono">
+              ⚡ POWERING UP COIN-OP ENGINE...
             </p>
-            <p className="text-[11px] text-slate-400 leading-relaxed">
-              If the server was idle, free cloud hosts take ~15–25 seconds to spin up. Hang tight!
+            <p className="text-[11px] text-slate-400 leading-relaxed font-medium">
+              Free cloud host instances take ~15–25 seconds to spin up from cold standby. Hang tight!
             </p>
           </div>
         )}
@@ -509,14 +509,14 @@ export default function RoomPage() {
                 socket.disconnect();
                 socket.connect();
               }}
-              className="px-4 py-2 rounded-xl bg-surface-elevated hover:bg-surface border border-border text-xs text-slate-300 flex items-center gap-1.5 cursor-pointer"
+              className="px-4 py-2.5 rounded-xl bg-[#1E2330] hover:bg-[#252B3B] border-2 border-black shadow-[3px_3px_0px_#000] text-xs font-black uppercase text-yellow-400 flex items-center gap-1.5 cursor-pointer font-mono"
             >
-              <RefreshCw className="w-3.5 h-3.5" />
+              <RefreshCw className="w-3.5 h-3.5 stroke-[2.5]" />
               <span>Retry</span>
             </button>
             <button
               onClick={() => router.push('/')}
-              className="px-4 py-2 rounded-xl bg-surface-elevated hover:bg-surface border border-border text-xs text-slate-300 flex items-center gap-1.5 cursor-pointer"
+              className="px-4 py-2.5 rounded-xl bg-[#1E2330] hover:bg-[#252B3B] border-2 border-black shadow-[3px_3px_0px_#000] text-xs font-black uppercase text-slate-300 flex items-center gap-1.5 cursor-pointer font-mono"
             >
               <Home className="w-3.5 h-3.5" />
               <span>Home</span>

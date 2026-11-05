@@ -6,7 +6,7 @@ import {
   QuizBattlePublicState,
   QuizBattlePrivateState,
 } from '@partyhive/shared';
-import { Sparkles, CheckCircle2, XCircle, Info, Zap, HelpCircle } from 'lucide-react';
+import { Sparkles, CheckCircle2, XCircle, Info, Zap } from 'lucide-react';
 
 interface QuizBattleViewProps {
   publicState: QuizBattlePublicState;
@@ -25,9 +25,9 @@ export const QuizBattleView: React.FC<QuizBattleViewProps> = ({
 
   if (!currentQ) {
     return (
-      <div className="glass-panel p-12 rounded-3xl border border-border text-center">
-        <Sparkles className="w-8 h-8 text-brand-400 mx-auto animate-pulse mb-3" />
-        <h3 className="text-xl font-bold text-white">Preparing Next Question...</h3>
+      <div className="p-12 rounded-3xl bg-[#151821] border-2 border-black shadow-[5px_5px_0px_#000] text-center">
+        <Sparkles className="w-8 h-8 text-yellow-400 mx-auto animate-pulse mb-3" />
+        <h3 className="text-xl font-black text-white font-display">PREPARING NEXT QUESTION...</h3>
       </div>
     );
   }
@@ -44,42 +44,42 @@ export const QuizBattleView: React.FC<QuizBattleViewProps> = ({
         key={currentQ.id}
         initial={{ opacity: 0, scale: 0.98 }}
         animate={{ opacity: 1, scale: 1 }}
-        className="glass-panel p-6 sm:p-8 rounded-3xl border border-border shadow-glow relative overflow-hidden"
+        className="p-6 sm:p-8 rounded-3xl bg-[#151821] border-2 border-black shadow-[6px_6px_0px_#000] relative overflow-hidden"
       >
-        {/* Header badges */}
+        {/* Header Badges */}
         <div className="flex flex-wrap items-center justify-between gap-2 mb-4">
           <div className="flex items-center gap-2">
-            <span className="text-xs uppercase font-black px-3 py-1 rounded-full bg-cyan/15 text-cyan-light border border-cyan/30">
+            <span className="text-xs uppercase font-black px-3 py-1 rounded bg-[#1E2330] text-arcade-cyan border-2 border-black shadow-[2px_2px_0px_#000]">
               {currentQ.category}
             </span>
-            <span className="text-xs text-slate-400 font-semibold">
-              Question {publicState.round} of {publicState.totalRounds}
+            <span className="text-xs text-slate-300 font-mono font-bold">
+              Q{publicState.round} OF {publicState.totalRounds}
             </span>
           </div>
 
-          <div className="flex items-center gap-1.5 text-xs text-yellow font-semibold">
-            <Zap className="w-4 h-4 fill-yellow" />
-            <span>Speed Multiplier Active</span>
+          <div className="flex items-center gap-1.5 text-xs text-yellow-400 font-black uppercase tracking-wider bg-yellow-400/10 px-2.5 py-1 rounded border border-yellow-400/30 font-mono">
+            <Zap className="w-4 h-4 fill-yellow-400" />
+            <span>Speed Bonus Active</span>
           </div>
         </div>
 
         {/* Question Text */}
-        <h2 className="text-xl sm:text-2xl font-black text-white leading-relaxed">
+        <h2 className="text-xl sm:text-2xl font-black text-white leading-relaxed font-display">
           {currentQ.question}
         </h2>
 
-        {/* Answer status pill */}
-        <div className="mt-4 flex items-center justify-between text-xs text-slate-400">
+        {/* Answer Status Bar */}
+        <div className="mt-4 pt-3 border-t-2 border-black flex items-center justify-between text-xs text-slate-400 font-bold font-mono">
           <span>{publicState.answeredPlayerIds.length} answered</span>
           {privateState.hasAnswered && !isRevealPhase && (
-            <span className="text-mint font-bold flex items-center gap-1">
+            <span className="text-arcade-mint font-black flex items-center gap-1 uppercase">
               <CheckCircle2 className="w-4 h-4" /> Locked in! Waiting for others...
             </span>
           )}
         </div>
       </motion.div>
 
-      {/* Multiple Choice Options Grid */}
+      {/* Multiple Choice Options Grid (Chunky Arcade Push Cards) */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         {currentQ.options.map((option, idx) => {
           const letter = String.fromCharCode(65 + idx); // A, B, C, D
@@ -87,41 +87,39 @@ export const QuizBattleView: React.FC<QuizBattleViewProps> = ({
           const isCorrect = isRevealPhase && revealData?.correctOptionId === option.id;
           const isWrong = isRevealPhase && isSelected && !isCorrect;
 
-          let cardStyle = 'border-border/70 bg-surface-elevated/60 hover:border-brand-500/50 hover:bg-surface-elevated';
+          let cardStyle = 'border-2 border-black bg-[#1E2330] text-white shadow-[4px_4px_0px_#000] hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[5px_5px_0px_#000] hover:border-slate-400';
           if (isSelected && !isRevealPhase) {
-            cardStyle = 'border-brand-500 bg-brand-500/25 shadow-glow scale-[1.01]';
+            cardStyle = 'border-2 border-yellow-400 bg-yellow-400/20 text-yellow-400 shadow-[5px_5px_0px_#FFB703] translate-x-[-1px] translate-y-[-1px]';
           } else if (isCorrect) {
-            cardStyle = 'border-mint bg-mint/20 shadow-glow text-mint scale-[1.02]';
+            cardStyle = 'border-2 border-arcade-mint bg-arcade-mint/25 text-arcade-mint shadow-[5px_5px_0px_#06D6A0] scale-[1.01]';
           } else if (isWrong) {
-            cardStyle = 'border-coral bg-coral/20 text-coral';
+            cardStyle = 'border-2 border-arcade-coral bg-arcade-coral/25 text-arcade-coral shadow-[4px_4px_0px_#EF476F]';
           }
 
           return (
-            <motion.button
+            <button
               key={option.id}
-              whileHover={(!privateState.hasAnswered && !isRevealPhase) ? { scale: 1.015 } : {}}
-              whileTap={(!privateState.hasAnswered && !isRevealPhase) ? { scale: 0.985 } : {}}
               type="button"
               disabled={privateState.hasAnswered || isRevealPhase}
               onClick={() => handleSelectOption(option.id)}
-              className={`p-5 rounded-2xl border text-left transition-all duration-200 flex items-center justify-between gap-4 cursor-pointer ${cardStyle} ${
-                privateState.hasAnswered && !isSelected ? 'opacity-50 cursor-default' : ''
-              }`}
+              className={`p-5 rounded-2xl text-left transition-all duration-150 flex items-center justify-between gap-4 cursor-pointer ${cardStyle} ${
+                privateState.hasAnswered && !isSelected ? 'opacity-40 cursor-default' : ''
+              } active:translate-x-[2px] active:translate-y-[2px] active:shadow-[1px_1px_0px_#000]`}
             >
-              <div className="flex items-center gap-3">
-                <span className={`w-8 h-8 rounded-xl flex items-center justify-center font-black text-sm border shrink-0 ${
-                  isSelected ? 'bg-brand-500 text-white border-brand-400' : 'bg-surface border-border text-slate-300'
+              <div className="flex items-center gap-3 min-w-0">
+                <span className={`w-9 h-9 rounded-xl flex items-center justify-center font-black text-sm border-2 border-black shrink-0 font-mono shadow-[2px_2px_0px_#000] ${
+                  isSelected ? 'bg-yellow-400 text-black' : 'bg-[#0B0C10] text-white'
                 }`}>
                   {letter}
                 </span>
-                <span className="text-sm sm:text-base font-bold text-white">
+                <span className="text-sm sm:text-base font-black truncate">
                   {option.text}
                 </span>
               </div>
 
-              {isCorrect && <CheckCircle2 className="w-6 h-6 text-mint shrink-0" />}
-              {isWrong && <XCircle className="w-6 h-6 text-coral shrink-0" />}
-            </motion.button>
+              {isCorrect && <CheckCircle2 className="w-6 h-6 text-arcade-mint shrink-0 stroke-[3]" />}
+              {isWrong && <XCircle className="w-6 h-6 text-arcade-coral shrink-0 stroke-[3]" />}
+            </button>
           );
         })}
       </div>
@@ -133,10 +131,10 @@ export const QuizBattleView: React.FC<QuizBattleViewProps> = ({
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0 }}
-            className="glass-panel p-5 rounded-2xl border border-brand-500/40 bg-surface/90 space-y-2 shadow-lg"
+            className="p-5 rounded-2xl bg-[#1E2330] border-2 border-black shadow-[4px_4px_0px_#000] space-y-2"
           >
-            <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-brand-300">
-              <Info className="w-4 h-4" />
+            <div className="flex items-center gap-2 text-xs font-black uppercase tracking-wider text-yellow-400 font-display">
+              <Info className="w-4 h-4 stroke-[2.5]" />
               <span>Explanation</span>
             </div>
             <p className="text-sm text-slate-200 leading-relaxed font-medium">

@@ -88,12 +88,12 @@ export const Logo: React.FC<LogoProps> = ({ size = 'md', showTagline = false }) 
       </div>
 
       <div className="flex flex-col">
-        <span className={`font-black tracking-tight ${textSizes[size]} text-white leading-none flex items-center`}>
+        <span className={`font-black tracking-tight ${textSizes[size]} text-white leading-none flex items-center font-display`}>
           Party<span className="text-transparent bg-clip-text bg-gradient-to-r from-yellow via-coral to-brand-400">Hive</span>
           <span className="ml-1.5 w-1.5 h-1.5 rounded-full bg-yellow animate-pulse" />
         </span>
         {showTagline && (
-          <span className="text-[10px] uppercase font-bold tracking-widest text-slate-400 mt-1">
+          <span className="text-[10px] uppercase font-mono font-bold tracking-widest text-slate-400 mt-1">
             Play Together. Laugh Louder.
           </span>
         )}

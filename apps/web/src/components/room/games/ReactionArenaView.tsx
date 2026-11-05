@@ -43,88 +43,91 @@ export const ReactionArenaView: React.FC<ReactionArenaViewProps> = ({
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [handleReact, privateState.hasReacted, isRoundResults]);
 
-  let arenaBg = 'bg-[#18111A] border-border';
+  let arenaBg = 'bg-[#151821] border-2 border-black shadow-[6px_6px_0px_#000]';
   let statusText = 'GET READY...';
-  let subText = 'Wait for the arena to turn green. Press SPACE or Click anywhere!';
+  let subText = 'Wait for the arena to turn green. Press SPACE or Tap anywhere!';
 
   if (isWaitingSignal) {
-    arenaBg = 'bg-gradient-to-b from-rose-950/60 to-surface border-coral/40';
+    arenaBg = 'bg-[#2A1118] border-2 border-rose-500 shadow-[6px_6px_0px_#000]';
     statusText = 'WAIT FOR GREEN...';
-    subText = 'Do NOT click yet! False starts are penalized.';
+    subText = 'Do NOT tap yet! False starts result in 0 points.';
   } else if (isSignalActive) {
-    arenaBg = 'bg-gradient-to-b from-emerald-900/80 to-emerald-950 border-mint shadow-glow';
-    statusText = 'CLICK NOW!!!';
-    subText = 'REACT FAST! TAP SCREEN OR HIT SPACE!';
+    arenaBg = 'bg-arcade-mint border-2 border-black text-black shadow-[8px_8px_0px_#000]';
+    statusText = 'TAP NOW!!!';
+    subText = 'REACT FAST! SMASH SCREEN OR HIT SPACE!';
   } else if (isRoundResults) {
-    arenaBg = 'bg-surface border-border';
+    arenaBg = 'bg-[#151821] border-2 border-black shadow-[6px_6px_0px_#000]';
     statusText = 'ROUND FINISHED';
-    subText = 'Here are the fastest reflexes of this round:';
+    subText = 'Reflex times locked in for this round.';
   }
 
   return (
     <div className="space-y-6 max-w-4xl mx-auto">
       {/* Header bar */}
-      <div className="flex items-center justify-between text-xs text-slate-400">
-        <div className="flex items-center gap-1.5 font-bold text-white uppercase tracking-wider">
-          <Zap className="w-4 h-4 text-cyan" />
-          <span>Reaction Arena • Round {publicState.round} of {publicState.totalRounds}</span>
+      <div className="flex items-center justify-between text-xs text-slate-300 font-mono font-bold">
+        <div className="flex items-center gap-1.5 uppercase tracking-wider text-yellow-400">
+          <Zap className="w-4 h-4 fill-yellow-400 stroke-yellow-400" />
+          <span>Reflex Arena • Round {publicState.round}/{publicState.totalRounds}</span>
         </div>
         <span>{publicState.reactedPlayerIds.length} players reacted</span>
       </div>
 
-      {/* Main Interactive Arena Box */}
-      <div
+      {/* Main Interactive Arena Box (Massive thumb-friendly touch target) */}
+      <button
+        type="button"
         onClick={handleReact}
-        className={`w-full h-80 sm:h-96 rounded-3xl border-2 flex flex-col items-center justify-center p-8 text-center cursor-pointer transition-all duration-150 select-none shadow-glow relative overflow-hidden ${arenaBg}`}
+        className={`w-full h-80 sm:h-96 rounded-3xl flex flex-col items-center justify-center p-8 text-center cursor-pointer transition-all duration-100 select-none relative overflow-hidden active:translate-x-[2px] active:translate-y-[2px] active:shadow-[2px_2px_0px_#000] ${arenaBg}`}
       >
         {isSignalActive && (
-          <div className="absolute inset-0 bg-mint/20 animate-ping pointer-events-none" />
+          <div className="absolute inset-0 bg-white/20 animate-ping pointer-events-none" />
         )}
 
         {privateState.isFalseStart ? (
           <div className="space-y-3">
-            <AlertTriangle className="w-16 h-16 text-yellow mx-auto animate-bounce" />
-            <h3 className="text-3xl font-black text-yellow tracking-tight">
+            <AlertTriangle className="w-16 h-16 text-yellow-400 mx-auto animate-bounce stroke-[2.5]" />
+            <h3 className="text-3xl sm:text-4xl font-black text-yellow-400 tracking-tight font-display">
               FALSE START!
             </h3>
-            <p className="text-xs text-slate-300">
+            <p className="text-xs text-slate-200 font-bold uppercase tracking-wider">
               You clicked before the green signal! 0 points this round.
             </p>
           </div>
         ) : privateState.hasReacted && privateState.myReactionTimeMs ? (
           <div className="space-y-2">
-            <CheckCircle2 className="w-12 h-12 text-mint mx-auto" />
-            <div className="text-4xl sm:text-5xl font-black text-white font-mono">
-              {privateState.myReactionTimeMs} <span className="text-xl text-mint">ms</span>
+            <CheckCircle2 className="w-14 h-14 text-arcade-mint mx-auto stroke-[3]" />
+            <div className="text-5xl sm:text-6xl font-black text-white font-mono tracking-tight">
+              {privateState.myReactionTimeMs} <span className="text-2xl text-arcade-mint font-display">MS</span>
             </div>
-            <p className="text-xs text-slate-300">
+            <p className="text-xs text-slate-300 font-bold uppercase tracking-wider">
               Reaction time locked in! Waiting for round results...
             </p>
           </div>
         ) : (
           <div className="space-y-3">
             {isSignalActive ? (
-              <Zap className="w-20 h-20 text-white fill-mint mx-auto animate-bounce" />
+              <Zap className="w-20 h-20 text-black fill-black mx-auto animate-bounce stroke-[2.5]" />
             ) : (
-              <Clock className="w-12 h-12 text-slate-400 mx-auto" />
+              <Clock className="w-14 h-14 text-slate-400 mx-auto stroke-[2.5]" />
             )}
-            <h3 className={`text-3xl sm:text-5xl font-black tracking-tight ${
-              isSignalActive ? 'text-white' : 'text-slate-200'
+            <h3 className={`text-4xl sm:text-6xl font-black tracking-tight font-display ${
+              isSignalActive ? 'text-black' : 'text-white'
             }`}>
               {statusText}
             </h3>
-            <p className="text-xs sm:text-sm text-slate-300 max-w-sm mx-auto">
+            <p className={`text-xs sm:text-sm font-bold uppercase tracking-wider max-w-sm mx-auto ${
+              isSignalActive ? 'text-black/80' : 'text-slate-300'
+            }`}>
               {subText}
             </p>
           </div>
         )}
-      </div>
+      </button>
 
       {/* Leaderboard for Current Round Results */}
       {isRoundResults && (
-        <div className="glass-panel p-6 rounded-3xl border border-border shadow-glow space-y-4">
-          <h4 className="text-sm font-bold uppercase tracking-wider text-white flex items-center gap-2">
-            <Zap className="w-4 h-4 text-cyan" />
+        <div className="p-6 rounded-3xl bg-[#151821] border-2 border-black shadow-[5px_5px_0px_#000] space-y-4">
+          <h4 className="text-xs font-black uppercase tracking-wider text-yellow-400 flex items-center gap-2 font-display">
+            <Zap className="w-4 h-4 fill-yellow-400 text-yellow-400" />
             <span>Round {publicState.round} Reflex Standings</span>
           </h4>
 
@@ -132,24 +135,24 @@ export const ReactionArenaView: React.FC<ReactionArenaViewProps> = ({
             {publicState.results.map((res) => (
               <div
                 key={res.playerId}
-                className="flex items-center justify-between p-3 rounded-2xl bg-surface border border-border/70 text-xs"
+                className="flex items-center justify-between p-3.5 rounded-2xl bg-[#1E2330] border-2 border-black shadow-[2px_2px_0px_#000] text-xs font-bold"
               >
                 <div className="flex items-center gap-2.5">
-                  <span className="font-bold text-slate-400 w-5">#{res.rank}</span>
+                  <span className="font-black text-yellow-400 w-5 font-mono">#{res.rank}</span>
                   <PlayerAvatar avatar={res.avatar} size="xs" />
-                  <span className="font-bold text-white">{res.nickname}</span>
+                  <span className="text-white">{res.nickname}</span>
                 </div>
 
                 <div className="flex items-center gap-2 font-mono">
                   {res.isFalseStart ? (
-                    <span className="text-yellow font-bold text-[11px]">False Start</span>
+                    <span className="text-yellow-400 font-black text-[11px] uppercase">False Start</span>
                   ) : res.reactionTimeMs !== null ? (
-                    <span className="text-mint font-bold">{res.reactionTimeMs} ms</span>
+                    <span className="text-arcade-mint font-black">{res.reactionTimeMs} ms</span>
                   ) : (
                     <span className="text-slate-500">Timed out</span>
                   )}
                   {res.scoreEarned > 0 && (
-                    <span className="text-brand-300 font-bold">(+{res.scoreEarned})</span>
+                    <span className="text-yellow-400 font-black">(+{res.scoreEarned})</span>
                   )}
                 </div>
               </div>

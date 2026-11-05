@@ -34,7 +34,7 @@ export const ChatSidebar: React.FC<ChatSidebarProps> = ({
   const [inputText, setInputText] = useState('');
   const messagesScrollRef = useRef<HTMLDivElement>(null);
 
-  // FIX: Scroll ONLY the internal messages div, NEVER the window!
+  // Scroll ONLY the internal messages div, never the window
   useEffect(() => {
     if (messagesScrollRef.current) {
       messagesScrollRef.current.scrollTop = messagesScrollRef.current.scrollHeight;
@@ -49,7 +49,7 @@ export const ChatSidebar: React.FC<ChatSidebarProps> = ({
   };
 
   return (
-    <div className="flex flex-col h-full glass-panel rounded-3xl border border-border overflow-hidden relative shadow-lg">
+    <div className="flex flex-col h-full rounded-3xl bg-[#151821] border-2 border-black shadow-[4px_4px_0px_#000] overflow-hidden relative">
       {/* Floating Reaction Particles Overlay */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden z-20">
         {reactions.map((rc) => (
@@ -66,17 +66,17 @@ export const ChatSidebar: React.FC<ChatSidebarProps> = ({
       </div>
 
       {/* Header */}
-      <div className="px-4 py-3 border-b border-border/70 bg-surface/90 flex items-center justify-between">
+      <div className="px-4 py-3 border-b-2 border-black bg-[#10131B] flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <MessageSquare className="w-4 h-4 text-cyan" />
-          <span className="text-xs font-bold uppercase tracking-wider text-slate-200">
+          <MessageSquare className="w-4 h-4 text-yellow-400 stroke-[2.5]" />
+          <span className="text-xs font-black uppercase tracking-wider text-white font-display">
             Room Chat & Guesses
           </span>
         </div>
         <div className="flex items-center gap-2">
-          <div className="flex items-center gap-1.5 text-[10px] text-mint font-semibold">
-            <span className="w-1.5 h-1.5 rounded-full bg-mint animate-pulse" />
-            <span>Live</span>
+          <div className="flex items-center gap-1.5 text-[10px] text-arcade-mint font-mono font-bold">
+            <span className="w-1.5 h-1.5 rounded-full bg-arcade-mint animate-pulse" />
+            <span>LIVE</span>
           </div>
           {onClose && (
             <button
@@ -84,7 +84,7 @@ export const ChatSidebar: React.FC<ChatSidebarProps> = ({
               className="lg:hidden p-1 rounded-lg text-slate-400 hover:text-white"
               title="Close chat"
             >
-              <X className="w-4 h-4" />
+              <X className="w-4 h-4 stroke-[2.5]" />
             </button>
           )}
         </div>
@@ -98,7 +98,7 @@ export const ChatSidebar: React.FC<ChatSidebarProps> = ({
         {messages.length === 0 ? (
           <div className="h-full flex flex-col items-center justify-center text-center text-slate-500 py-8">
             <Sparkles className="w-6 h-6 text-slate-600 mb-2" />
-            <p className="text-xs font-semibold text-slate-400">No chat messages yet.</p>
+            <p className="text-xs font-bold text-slate-400 uppercase tracking-wider font-mono">No messages yet</p>
             <p className="text-[10px] text-slate-500 mt-0.5">Type greetings or enter guesses here!</p>
           </div>
         ) : (
@@ -107,7 +107,7 @@ export const ChatSidebar: React.FC<ChatSidebarProps> = ({
               return (
                 <div
                   key={msg.id}
-                  className="p-2 rounded-xl bg-brand-500/15 border border-brand-500/30 text-brand-200 text-[11px] font-semibold text-center leading-relaxed"
+                  className="p-2 rounded-xl bg-yellow-400/15 border border-yellow-400/30 text-yellow-400 text-[11px] font-black text-center leading-relaxed font-mono"
                 >
                   {msg.text}
                 </div>
@@ -115,18 +115,18 @@ export const ChatSidebar: React.FC<ChatSidebarProps> = ({
             }
 
             return (
-              <div key={msg.id} className="flex items-start gap-2.5 p-1.5 rounded-xl hover:bg-surface/50 transition-colors">
+              <div key={msg.id} className="flex items-start gap-2.5 p-1.5 rounded-xl hover:bg-[#1E2330]/60 transition-colors">
                 <PlayerAvatar avatar={msg.avatar} size="xs" />
                 <div className="flex-1 min-w-0">
                   <div className="flex items-baseline gap-1.5">
-                    <span className="font-bold text-white text-[11px]">
+                    <span className="font-black text-white text-[11px]">
                       {msg.nickname}
                     </span>
-                    <span className="text-[9px] text-slate-500">
+                    <span className="text-[9px] text-slate-500 font-mono">
                       {new Date(msg.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' })}
                     </span>
                   </div>
-                  <p className="text-slate-300 break-words leading-relaxed font-normal">
+                  <p className="text-slate-300 break-words leading-relaxed font-medium">
                     {msg.text}
                   </p>
                 </div>
@@ -137,13 +137,13 @@ export const ChatSidebar: React.FC<ChatSidebarProps> = ({
       </div>
 
       {/* Tactile Arcade Quick Reactions Bar */}
-      <div className="px-3 py-2 border-t border-border/40 bg-surface/60 flex items-center justify-between gap-1 overflow-x-auto">
+      <div className="px-3 py-2 border-t-2 border-black bg-[#10131B] flex items-center justify-between gap-1 overflow-x-auto">
         {QUICK_EMOJIS.map((item) => (
           <button
             key={item.emoji}
             type="button"
             onClick={() => onSendReaction(item.emoji)}
-            className="w-8 h-8 rounded-xl bg-surface-elevated/90 border border-border/70 hover:border-brand-500/50 hover:bg-brand-500/20 hover:scale-115 active:scale-90 flex items-center justify-center text-sm select-none focus:outline-none transition-all cursor-pointer shrink-0 shadow-sm"
+            className="w-8 h-8 rounded-xl bg-[#1E2330] border-2 border-black hover:border-yellow-400 hover:bg-yellow-400/20 active:translate-x-[1px] active:translate-y-[1px] flex items-center justify-center text-sm select-none focus:outline-none transition-all cursor-pointer shrink-0 shadow-[2px_2px_0px_#000]"
             title={`React with ${item.label}`}
           >
             {item.emoji}
@@ -152,21 +152,21 @@ export const ChatSidebar: React.FC<ChatSidebarProps> = ({
       </div>
 
       {/* Input Field */}
-      <form onSubmit={handleSubmit} className="p-3 border-t border-border/60 bg-surface/95 flex gap-2">
+      <form onSubmit={handleSubmit} className="p-3 border-t-2 border-black bg-[#151821] flex gap-2">
         <input
           type="text"
           value={inputText}
           maxLength={150}
           onChange={(e) => setInputText(e.target.value)}
-          placeholder="Type a guess or chat..."
-          className="flex-1 px-3 py-2 rounded-xl bg-surface-elevated border border-border text-white text-xs placeholder-slate-500 focus:outline-none focus:border-brand-500 focus:ring-1 focus:ring-brand-500/30 transition-all font-medium"
+          placeholder="Type a guess or message..."
+          className="flex-1 px-3 py-2.5 rounded-xl bg-[#0B0C10] border-2 border-black text-white text-xs placeholder-slate-500 focus:outline-none focus:border-yellow-400 transition-colors font-medium shadow-[inset_1px_1px_0px_#000]"
         />
         <button
           type="submit"
-          className="p-2 rounded-xl bg-brand-600 hover:bg-brand-500 text-white shadow-glow transition-all active:scale-95 cursor-pointer"
+          className="p-2.5 rounded-xl bg-yellow-400 hover:bg-yellow-300 text-black border-2 border-black shadow-[2px_2px_0px_#000] active:translate-x-[1px] active:translate-y-[1px] active:shadow-[0px_0px_0px_#000] transition-all cursor-pointer"
           title="Send"
         >
-          <Send className="w-3.5 h-3.5" />
+          <Send className="w-3.5 h-3.5 stroke-[2.5]" />
         </button>
       </form>
     </div>

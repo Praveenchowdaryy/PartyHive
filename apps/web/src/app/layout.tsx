@@ -4,7 +4,7 @@ import { Navbar } from '@/components/layout/Navbar';
 import { Footer } from '@/components/layout/Footer';
 
 export const viewport: Viewport = {
-  themeColor: '#8B5CF6',
+  themeColor: '#0B0C10',
   width: 'device-width',
   initialScale: 1,
   maximumScale: 1,
@@ -61,7 +61,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className="dark">
-      <body className="bg-background text-slate-100 flex flex-col min-h-screen antialiased selection:bg-brand-500 selection:text-white">
+      <body className="bg-background text-[#F8F9FA] flex flex-col min-h-screen antialiased selection:bg-yellow-400 selection:text-black">
         <Navbar />
         <main className="flex-1">
           {children}

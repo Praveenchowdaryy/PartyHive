@@ -277,7 +277,7 @@ export const PlayerAvatar: React.FC<PlayerAvatarProps> = ({
 
   return (
     <div
-      className={`relative inline-flex items-center justify-center rounded-2xl bg-gradient-to-b ${bgStyle} border shadow-inner shrink-0 select-none ${currentSize} ${className}`}
+      className={`relative inline-flex items-center justify-center rounded-2xl bg-gradient-to-b ${bgStyle} border-2 border-black shadow-[2px_2px_0px_#000] shrink-0 select-none ${currentSize} ${className}`}
     >
       {renderAvatarGraphic()}
     </div>
